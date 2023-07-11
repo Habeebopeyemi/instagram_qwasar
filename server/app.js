@@ -1,9 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const { MONGODBURI } = require("./keys");
+require("./models/user");
 
 const app = express();
 const PORT = 5000;
+
+app.use(express.json());
+app.use(require("./routes/auth"));
 
 mongoose.connect(MONGODBURI, {
   useNewUrlParser: true,
