@@ -1,14 +1,18 @@
 import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Navbar, Profile, Home, Login, Signup } from "./components";
 
 function App() {
   return (
-    <div className="App">
-      <header className="bg-white">
-        <p className="w-[50%] mx-auto mt-[50vh]">
-          Instagram clone UI begins, YEEEEHHH!!!
-        </p>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/Signup" element={<Signup />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
