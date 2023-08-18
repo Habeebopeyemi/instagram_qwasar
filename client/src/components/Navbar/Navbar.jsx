@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import List from "./List";
 import { header_info } from "../../data";
 import useWindowSize from "../../hooks/hooks";
@@ -6,6 +7,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   const size = useWindowSize();
   useEffect(() => {
     if (size.width > 768) {
@@ -19,12 +21,17 @@ const Navbar = () => {
     <header className="w-full bg-[hsla(0,0%,100%,1)]">
       <nav className="w-full md:flex justify-between shadow-lg">
         <div className="flex justify-between md:basis-[15%]">
-          <p className="p-2 text-[2rem] logo">Instagram</p>
+          <p
+            className="p-2 text-[2rem] logo hover:cursor-pointer"
+            onClick={() => navigate("/")}
+          >
+            Instagram
+          </p>
           <div
             className="p-2 md:hidden"
             onClick={() => setOpen((prev) => !prev)}
           >
-            <RxHamburgerMenu className="text-xl" />
+            <RxHamburgerMenu className="text-xl mt-3" />
           </div>
         </div>
         {open ? (
