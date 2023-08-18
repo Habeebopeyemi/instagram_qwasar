@@ -9,7 +9,7 @@ const List = ({ location, text }) => {
         className={({ isActive }) =>
           isActive
             ? "p-2 md:block h-[100%] md:p-4 border-b-2 border-orange-500 bg-slate-100"
-            : "p-2 md:block h-[100%] md:p-4 hover:border-b-2 hover:border-orange-500 ease-in-out hover:bg-slate-100"
+            : "p-2 md:block h-[100%] md:p-4 hover:border-b-2 ease-in-out hover:bg-slate-100"
         }
       >
         {text}

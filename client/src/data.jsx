@@ -15,3 +15,9 @@ export const header_info = [
     text: "Profile",
   },
 ];
+
+export const stat_data = [
+  { id: 1, value: 80, title: "posts" },
+  { id: 2, value: 376, title: "followers" },
+  { id: 3, value: 300, title: "following" },
+];
