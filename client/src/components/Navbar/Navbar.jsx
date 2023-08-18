@@ -20,7 +20,7 @@ const Navbar = () => {
   return (
     <header className="w-full bg-[hsla(0,0%,100%,1)]">
       <nav className="w-full md:flex justify-between shadow-lg">
-        <div className="flex justify-between md:basis-[15%]">
+        <div className="flex justify-between md:basis-[10%]">
           <p
             className="p-2 text-[2rem] logo hover:cursor-pointer"
             onClick={() => navigate("/")}
@@ -35,10 +35,14 @@ const Navbar = () => {
           </div>
         </div>
         {open ? (
-          <div className={"md:flex md:basis-[85%] justify-end"}>
+          <div
+            className={
+              "md:flex justify-end md:basis-[90%] lg:basis-[68%] xl:basis-[55%]"
+            }
+          >
             <ul
               className={
-                "mr-2 p-2 md:p-0 basis-[40%] md:flex md:my-0 justify-between lg:basis-[30%] smax:basis-[25%]"
+                "mr-2 p-2 md:p-0 basis-[75%] md:flex md:my-0 justify-between smax:basis-[60%]"
               }
             >
               {header_info.map((info) => {

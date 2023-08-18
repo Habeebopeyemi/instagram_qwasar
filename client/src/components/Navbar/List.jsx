@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 const List = ({ location, text }) => {
   return (
-    <li className="mb-2 md:mb-0 md:basis-[33%] md:text-center">
+    <li className="mb-2 md:mb-0 md:basis-[25%] lg:basis-[23%] md:text-center smax:basis-[22%]">
       <NavLink
         to={location}
         className={({ isActive }) =>

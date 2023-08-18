@@ -14,6 +14,11 @@ export const header_info = [
     location: "/profile",
     text: "Profile",
   },
+  {
+    id: 4,
+    location: "/createpost",
+    text: "Create Post",
+  },
 ];
 
 export const stat_data = [
