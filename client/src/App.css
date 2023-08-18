@@ -40,3 +40,19 @@
     transform: rotate(360deg);
   }
 }
+/* Hide the original file input */
+.custom-file-input input[type="file"] {
+  display: none;
+}
+
+/* Style the custom button and label */
+.custom-file-input label {
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+/* Remove the "for" attribute from the label when focusing the file input */
+.custom-file-input input[type="file"]:focus + label {
+  outline: 2px solid #4caf50;
+}
