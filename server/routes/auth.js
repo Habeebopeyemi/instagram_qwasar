@@ -1,17 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../keys");
+const requireAuth = require("../middleware/requireAuth");
 
 const router = express.Router();
 const User = mongoose.model("User");
 
-router.get("/", (req, res, next) => {
-  res.send("hello");
-});
-
 router.post("/signup", (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, pic } = req.body;
   if (!email || !password || !name) {
     res.status(422).json({ error: "please add all the fields" });
   }
@@ -26,6 +24,7 @@ router.post("/signup", (req, res, next) => {
           email: email,
           password: hashed_password,
           name: name,
+          pic,
         });
         new_user
           .save()
@@ -55,7 +54,13 @@ router.post("/signin", (req, res, next) => {
       .compare(password, user.password)
       .then(onFulfilled => {
         if (onFulfilled) {
-          return res.json({ message: "sign in successful" });
+          const token = jwt.sign({ _id: user._id }, JWT_SECRET);
+          const { _id, name, email, followers, following, pic } = user;
+          return res.status(200).json({
+            message: "sign in successful",
+            token: token,
+            user: { _id, name, email, followers, following, pic },
+          });
         } else {
           return res.status(422).json({ error: "invalid email or password" });
         }

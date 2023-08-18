@@ -2,12 +2,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const { MONGODBURI } = require("./keys");
 require("./models/user");
+require("./models/post");
 
 const app = express();
 const PORT = 5000;
-
-app.use(express.json());
-app.use(require("./routes/auth"));
 
 mongoose.connect(MONGODBURI, {
   useNewUrlParser: true,
@@ -20,23 +18,29 @@ mongoose.connection.on("error", err => {
   console.log("error connecting ", err);
 });
 
-const customMiddleware = (req, res, next) => {
-  console.log("middleware executed!!");
-  next();
-};
+app.use(express.json()); //for receiving data from req.body
+app.use(require("./routes/auth"));
+app.use(require("./routes/post"));
+app.use(require("./routes/user"));
+
+// const customMiddleware = (req, res, next) => {
+//   console.log("middleware executed!!");
+//   next();
+// };
+
 /*middle run for every request */
 // app.use(customMiddleware);
 
-app.get("/", (req, res) => {
-  res.send("hello world");
-});
+// app.get("/", (req, res) => {
+//   res.send("hello world");
+// });
 
 /*middle run for only /about request */
 
-app.get("/about", customMiddleware, (req, res) => {
-  console.log("about");
-  res.send("about page");
-});
+// app.get("/about", customMiddleware, (req, res) => {
+//   console.log("about");
+//   res.send("about page");
+// });
 
 app.listen(PORT, () => {
   console.log("server is running on ", PORT);
