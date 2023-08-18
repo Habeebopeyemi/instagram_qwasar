@@ -19,7 +19,7 @@ const Navbar = () => {
     <header className="w-full bg-[hsla(0,0%,100%,1)]">
       <nav className="w-full md:flex justify-between shadow-lg">
         <div className="flex justify-between md:basis-[15%]">
-          <p className="p-2 text-xl">Instagram</p>
+          <p className="p-2 text-[2rem] logo">Instagram</p>
           <div
             className="p-2 md:hidden"
             onClick={() => setOpen((prev) => !prev)}
