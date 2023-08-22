@@ -16,7 +16,7 @@ const userSchema = mongoose.Schema({
   },
   pic: {
     types: String,
-    default: "", //update with a cloudinary based default image later
+    default: "no pic",
   },
   followers: [{ type: ObjectId, ref: "User" }],
   following: [{ type: ObjectId, ref: "User" }],

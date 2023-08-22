@@ -49,7 +49,7 @@ router.post("/signin", (req, res, next) => {
       .json({ error: "please add valid email or password" });
 
   User.findOne({ email: email }).then(user => {
-    if (!user) res.status(422).json({ error: "invalid email or password" });
+    if (!user) return res.status(422).json({ error: "invalid email or password" });
     bcrypt
       .compare(password, user.password)
       .then(onFulfilled => {
