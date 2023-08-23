@@ -1,7 +1,7 @@
 export const header_info = [
   {
     id: 1,
-    location: "/login",
+    location: "/",
     text: "Login",
   },
   {

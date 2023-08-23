@@ -16,7 +16,6 @@ const userSchema = mongoose.Schema({
   },
   pic: {
     types: String,
-    default: "no pic",
   },
   followers: [{ type: ObjectId, ref: "User" }],
   following: [{ type: ObjectId, ref: "User" }],

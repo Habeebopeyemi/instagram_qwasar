@@ -19,6 +19,18 @@ mongoose.connection.on("error", err => {
 });
 
 app.use(express.json()); //for receiving data from req.body
+
+// handling CORS
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization,x-requested-with"
+  );
+  next();
+});
+
 app.use(require("./routes/auth"));
 app.use(require("./routes/post"));
 app.use(require("./routes/user"));
