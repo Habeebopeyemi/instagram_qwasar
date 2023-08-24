@@ -16,7 +16,9 @@ const CreatePost = () => {
     console.log(e.target.files[0]);
     setImage(e.target.files[0]);
   };
-  const handleImageUpload = () => {
+  const handleImageUpload = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
     const data = new FormData();
     data.append("file", image);
     data.append("upload_preset", "instagram_qwasar");
@@ -36,9 +38,7 @@ const CreatePost = () => {
         throw new Error(err);
       });
   };
-  const onSubmit = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const onSubmit = () => {
     createpostMutation(post)
       .unwrap()
       .then((res) => {
@@ -52,12 +52,14 @@ const CreatePost = () => {
       });
   };
   useEffect(() => {
-    handleImageUpload();
-  }, [image]);
+    if (post.pic_url) {
+      onSubmit();
+    }
+  }, [post.pic_url]);
   return (
     <div className="w-[90%] max-w-[600px] mx-auto my-10 rounded-md shadow-lg border-[1px]">
       <div className="w-full my-10">
-        <form className="w-full text-center" onSubmit={onSubmit}>
+        <form className="w-full text-center" onSubmit={handleImageUpload}>
           <h4 className="logo text-[1.8rem] my-5">Instagram</h4>
           <div className="w-full mb-5">
             <input
