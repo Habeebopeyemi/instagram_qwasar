@@ -62,6 +62,7 @@ export const instagramAPI = createApi({
 export const {
   useSignupMutation,
   useSigninMutation,
+  useCreatepostMutation,
   useMypostsQuery,
   useAllpostsQuery,
   useFollowingpostsQuery,

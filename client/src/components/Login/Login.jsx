@@ -31,7 +31,7 @@ const Login = () => {
         setUserInput((prev) => {
           return { ...prev, name: "", email: "", password: "" };
         });
-        notification.error({ message: "error: check login credentials" });
+        notification.error({ message: "E.rror: check login credentials" });
       });
   };
   return (

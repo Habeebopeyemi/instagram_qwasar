@@ -47,13 +47,14 @@ router.get("/myposts", requireAuth, (req, res, next) => {
 });
 
 router.post("/createpost", requireAuth, (req, res, next) => {
-  const { title, body } = req.body;
-  if (!title || !body)
+  const { title, body, pic_url } = req.body;
+  if (!title || !body || !pic_url)
     return res.status(422).json({ error: "please input all the fields" });
   req.user.password = undefined;
   const post = new Post({
     title: title,
     body: body,
+    photo: pic_url,
     postedBy: req.user,
   });
   post
