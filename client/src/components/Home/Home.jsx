@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PostCard from "./PostCard";
 import {
   useAllpostsQuery,
@@ -7,14 +7,17 @@ import {
 } from "../../redux/queries/service";
 
 const Home = () => {
-  const { data, isLoading } = useAllpostsQuery();
+  const { data, isLoading, refetch } = useAllpostsQuery();
+  console.log(data?.posts);
   const [likePost] = useLikepostMutation();
   const [unlikePost] = useUnlikepostMutation();
-  console.log(data?.posts);
+
   const handlePostLike = (postId) => {
     likePost({ postId })
       .unwrap()
-      .then((res) => res)
+      .then((res) => {
+        refetch();
+      })
       .catch((err) => {
         console.log("error liking post");
       });
@@ -22,7 +25,9 @@ const Home = () => {
   const handlePostUnlike = (postId) => {
     unlikePost({ postId })
       .unwrap()
-      .then((res) => res)
+      .then((res) => {
+        refetch();
+      })
       .catch((err) => {
         console.log("error unliking post");
       });

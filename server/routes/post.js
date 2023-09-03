@@ -71,10 +71,15 @@ router.put("/like", requireAuth, async (req, res, next) => {
     const result = await Post.findByIdAndUpdate(
       req.body.postId,
       {
-        $push: { likes: req.user._id },
+        $addToSet: { likes: req.user._id },
       },
       { new: true }
     ).exec();
+
+    if (!result) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
     res.json(result);
   } catch (error) {
     return res.status(422).json({ error: error });
@@ -82,7 +87,6 @@ router.put("/like", requireAuth, async (req, res, next) => {
 });
 
 router.put("/unlike", requireAuth, async (req, res, next) => {
-  console.log(req.body.postId);
   try {
     const result = await Post.findByIdAndUpdate(
       req.body.postId,
