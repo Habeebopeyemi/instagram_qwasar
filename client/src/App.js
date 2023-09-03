@@ -7,18 +7,16 @@ const Routing = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const token = sessionStorage.getItem("token");
-    if (token) {
-      navigate("/home");
-    } else {
-      navigate("/");
+    if (!token) {
+      navigate("/login");
     }
   }, []);
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/" element={<Home />} />
       <Route path="/Signup" element={<Signup />} />
       <Route path="/profile" element={<Profile />} />
-      <Route path="/home" element={<Home />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/CreatePost" element={<CreatePost />} />
     </Routes>
   );

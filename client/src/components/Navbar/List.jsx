@@ -1,9 +1,15 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const List = ({ location, text }) => {
+const List = ({ location, text, visibility }) => {
   return (
-    <li className="mb-2 md:mb-0 md:basis-[25%] lg:basis-[23%] md:text-center smax:basis-[22%]">
+    <li
+      className={
+        visibility
+          ? "mb-2 md:mb-0 md:basis-[50%] lg:basis-[23%] md:text-center smax:basis-[22%]"
+          : "hidden"
+      }
+    >
       <NavLink
         to={location}
         className={({ isActive }) =>

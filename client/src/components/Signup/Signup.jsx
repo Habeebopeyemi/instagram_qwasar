@@ -26,7 +26,7 @@ const Signup = () => {
       .unwrap()
       .then((response) => {
         notification.success({ message: "signup successful" });
-        navigate("/");
+        navigate("/login");
       })
       .catch((err) => {
         setUserInput((prev) => {

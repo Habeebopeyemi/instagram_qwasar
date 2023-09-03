@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import List from "./List";
 import { header_info } from "../../data";
 import useWindowSize from "../../hooks/hooks";
@@ -7,8 +7,14 @@ import { RxHamburgerMenu } from "react-icons/rx";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
   const size = useWindowSize();
+  const token = sessionStorage.getItem("token");
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    navigate("/login");
+  };
   useEffect(() => {
     if (size.width > 768) {
       setOpen(true);
@@ -21,12 +27,11 @@ const Navbar = () => {
     <header className="w-full bg-[hsla(0,0%,100%,1)]">
       <nav className="w-full md:flex justify-between shadow-lg">
         <div className="flex justify-between md:basis-[10%]">
-          <p
-            className="p-2 text-[2rem] logo hover:cursor-pointer"
-            onClick={() => navigate("/")}
-          >
-            Instagram
-          </p>
+          <Link to={token ? "/" : "/login"}>
+            <p className="p-2 text-[2rem] logo hover:cursor-pointer">
+              Instagram
+            </p>
+          </Link>
           <div
             className="p-2 md:hidden"
             onClick={() => setOpen((prev) => !prev)}
@@ -42,18 +47,45 @@ const Navbar = () => {
           >
             <ul
               className={
-                "mr-2 p-2 md:p-0 basis-[75%] md:flex md:my-0 justify-between smax:basis-[60%]"
+                "basis-[55%] p-2 md:p-0 md:flex md:my-0 justify-end smax:basis-[60%]"
               }
             >
               {header_info.map((info) => {
-                return (
-                  <List
-                    key={info.id}
-                    text={info.text}
-                    location={info.location}
-                  />
-                );
+                if (info.text === "Login" || info.text === "Signup") {
+                  return (
+                    <List
+                      key={info.id}
+                      text={info.text}
+                      location={info.location}
+                      visibility={token ? false : true}
+                    />
+                  );
+                } else {
+                  return null;
+                }
               })}
+              {header_info.map((info) => {
+                if (info.text === "Profile" || info.text === "Create Post") {
+                  return (
+                    <List
+                      key={info.id}
+                      text={info.text}
+                      location={info.location}
+                      visibility={token ? true : false}
+                    />
+                  );
+                } else {
+                  return null;
+                }
+              })}
+              {token ? (
+                <button
+                  className="hover:text-white text-lg hover:bg-red-500 p-2 md:pb-4 md:basis-[50%] lg:basis-[23%] smax:basis-[22%] bg-white text-red-500"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              ) : null}
             </ul>
           </div>
         ) : null}

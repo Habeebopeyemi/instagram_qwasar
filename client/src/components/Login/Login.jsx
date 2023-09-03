@@ -25,7 +25,7 @@ const Login = () => {
       .then((response) => {
         sessionStorage.setItem("token", response.token);
         notification.success({ message: "login successful" });
-        navigate("/home");
+        navigate("/");
       })
       .catch((err) => {
         setUserInput((prev) => {
