@@ -44,7 +44,7 @@ const CreatePost = () => {
       .then((res) => {
         notification.success({ message: "post creation successful" });
         setIsLoading(false);
-        navigate("/home");
+        navigate("/");
       })
       .catch((err) => {
         notification.error({ message: "Error creating post" });

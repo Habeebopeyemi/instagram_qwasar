@@ -4,10 +4,13 @@ import Stat from "./Stat";
 import CustomName from "./CustomName";
 import { stat_data, friends_data } from "../../data";
 import Friends from "./Friends";
+import { useMypostsQuery } from "../../redux/queries/service";
 
 const Profile = () => {
   const [lastname, setLastName] = useState("suleiman");
   const [firstname, setFirstName] = useState("habeeb");
+  const { data } = useMypostsQuery();
+  console.log(data?.posts);
   return (
     <section className="w-full max-w-[1000px] mx-auto">
       <div className="w-full max-w-[500px] mt-10 mx-auto sm:max-w-[90%] sm:flex md:max-w-[1000px] border-b-[1px] border-black">
@@ -83,9 +86,9 @@ const Profile = () => {
       </div>
       {/* friends */}
       <div className="w-full p-3 mt-5 flex flex-wrap gap-2">
-        {friends_data
-          ? friends_data.map((friend) => (
-              <Friends key={friend.id} url={friend.url} name={friend.name} />
+        {data?.posts
+          ? data?.posts.map((post) => (
+              <Friends key={post._id} url={post.photo} name={post.title} />
             ))
           : null}
       </div>

@@ -35,6 +35,30 @@ export const instagramAPI = createApi({
         },
       }),
     }),
+    likepost: builder.mutation({
+      query: (payload) => ({
+        url: "/like",
+        method: "PUT",
+        body: payload,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      }),
+      invalidates: [{ endpointName: "allposts" }],
+    }),
+    unlikepost: builder.mutation({
+      query: (payload) => ({
+        url: "/unlike",
+        method: "PUT",
+        body: payload,
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      }),
+      invalidates: [{ endpointName: "allposts" }],
+    }),
     myposts: builder.query({
       query: () => ({
         url: "myposts",
@@ -66,4 +90,6 @@ export const {
   useMypostsQuery,
   useAllpostsQuery,
   useFollowingpostsQuery,
+  useLikepostMutation,
+  useUnlikepostMutation,
 } = instagramAPI;

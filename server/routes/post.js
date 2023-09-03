@@ -65,75 +65,76 @@ router.post("/createpost", requireAuth, (req, res, next) => {
     .catch(err => console.log(err));
 });
 
-router.put("/like", requireAuth, (req, res, next) => {
+router.put("/like", requireAuth, async (req, res, next) => {
   // postId will be sent from the client side, then set the last option with new being true to receive updated data
-  Post.findByIdAndUpdate(
-    req.body.postId,
-    {
-      $push: { likes: req.user._id },
-    },
-    { new: true }
-  ).exec((err, result) => {
-    if (err) {
-      return res.status(422).json({ error: err });
-    } else {
-      res.json(result);
-    }
-  });
+  try {
+    const result = await Post.findByIdAndUpdate(
+      req.body.postId,
+      {
+        $push: { likes: req.user._id },
+      },
+      { new: true }
+    ).exec();
+    res.json(result);
+  } catch (error) {
+    return res.status(422).json({ error: error });
+  }
 });
 
-router.put("/unlike", requireAuth, (req, res, next) => {
-  Post.findByIdAndUpdate(
-    req.body.postId,
-    { $pull: { likes: req.user._id } },
-    { new: true }
-  ).exec((err, result) => {
-    if (err) {
-      return res.status(422).json({ error: err });
-    } else {
-      res.json(result);
-    }
-  });
+router.put("/unlike", requireAuth, async (req, res, next) => {
+  console.log(req.body.postId);
+  try {
+    const result = await Post.findByIdAndUpdate(
+      req.body.postId,
+      { $pull: { likes: req.user._id } },
+      { new: true }
+    ).exec();
+    res.json(result);
+  } catch (error) {
+    return res.status(422).json({ error: error });
+  }
 });
 
-router.put("/comment", requireAuth, (req, res, next) => {
+router.put("/comment", requireAuth, async (req, res, next) => {
   const comment = {
     text: req.body.text, //text comes from user payload
     postedBy: req.user._id,
   };
-  Post.findByIdAndUpdate(
-    req.body.postId, //postId will be sent from client side
-    { $push: { comments: comment } },
-    { new: true }
-  )
-    .populate("comments.postedBy", "_id, name")
-    .exec((err, result) => {
-      if (err) {
-        return res.status(422).json({ err: err });
-      } else {
-        res.json(result);
-      }
-    });
+  try {
+    const result = await Post.findByIdAndUpdate(
+      req.body.postId, //postId will be sent from client side
+      { $push: { comments: comment } },
+      { new: true }
+    )
+      .populate("comments.postedBy", "_id, name")
+      .exec();
+    res.json(result);
+  } catch (error) {
+    return res.status(422).json({ err: error });
+  }
 });
 
-router.delete("/deletepost/:postId", requireAuth, (req, res, next) => {
-  Post.findOne({ _id: req.params.postId })
-    .populate("postedBy", "_id")
-    .exec((err, post) => {
-      if (err || !post) {
-        return res.status(422).json({ err: err });
-      }
-      if (post.postedBy._id.toString() === req.user._id.toString()) {
-        post
-          .remove()
-          .then(result => {
-            res.status(200).json({ message: "post deleted successfully" });
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      }
-    });
+router.delete("/deletepost/:postId", requireAuth, async (req, res, next) => {
+  try {
+    const post = await Post.findOne({ _id: req.params.postId })
+      .populate("postedBy", "_id")
+      .exec();
+    if (!post) {
+      return res.status(422).json({ err: "sorry this post does not exist" });
+    }
+    if (post.postedBy._id.toString() === req.user._id.toString()) {
+      post
+        .remove()
+        .then(result => {
+          return res.status(200).json({ message: "post deleted successfully" });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  } catch (error) {
+    return res.status(422).json({ err: error });
+  }
 });
 
 module.exports = router;
