@@ -127,17 +127,14 @@ router.delete("/deletepost/:postId", requireAuth, async (req, res, next) => {
       return res.status(422).json({ err: "sorry this post does not exist" });
     }
     if (post.postedBy._id.toString() === req.user._id.toString()) {
-      post
-        .remove()
-        .then(result => {
-          return res.status(200).json({ message: "post deleted successfully" });
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      await Post.findByIdAndRemove(req.params.postId);
+      return res.status(200).json({ message: "post deleted successfully" });
+    } else {
+      return res.status(403).json({ err: "Unauthorized to delete this post" });
     }
   } catch (error) {
-    return res.status(422).json({ err: error });
+    console.log(error);
+    return res.status(500).json({ err: "Internal server error" });
   }
 });
 

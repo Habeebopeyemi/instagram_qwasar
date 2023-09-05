@@ -24,6 +24,7 @@ const Login = () => {
       .unwrap()
       .then((response) => {
         sessionStorage.setItem("token", response.token);
+        sessionStorage.setItem("user", response.user._id);
         notification.success({ message: "login successful" });
         navigate("/");
       })

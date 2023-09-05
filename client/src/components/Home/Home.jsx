@@ -4,13 +4,16 @@ import {
   useAllpostsQuery,
   useLikepostMutation,
   useUnlikepostMutation,
+  useCommentMutation,
 } from "../../redux/queries/service";
 
 const Home = () => {
+  const [text, setText] = useState("");
   const { data, isLoading, refetch } = useAllpostsQuery();
-  console.log(data?.posts);
+  console.log(data);
   const [likePost] = useLikepostMutation();
   const [unlikePost] = useUnlikepostMutation();
+  const [comment] = useCommentMutation();
 
   const handlePostLike = (postId) => {
     likePost({ postId })
@@ -32,6 +35,20 @@ const Home = () => {
         console.log("error unliking post");
       });
   };
+  const handleComment = (postId) => {
+    let payload = { text: text, postId: postId };
+    comment(payload)
+      .unwrap()
+      .then((res) => {
+        setText("");
+        refetch();
+      })
+      .catch((err) => console.log(err));
+  };
+  const onChange = (e) => {
+    const { value } = e.target;
+    setText(value);
+  };
   return (
     <section className="w-full mt-5 flex gap-4 justify-center flex-wrap">
       {data?.posts.map((post) => (
@@ -43,8 +60,13 @@ const Home = () => {
           body={post.body}
           likes={post.likes}
           postId={post._id}
+          postedBy={post.postedBy._id}
           likePost={handlePostLike}
           unlikePost={handlePostUnlike}
+          comments={post.comments}
+          handleComment={handleComment}
+          onChange={onChange}
+          text={text}
         />
       ))}
     </section>

@@ -6,7 +6,6 @@ export const instagramAPI = createApi({
     baseUrl:
       process.env.NODE_ENV === "production" ? "" : "http://localhost:5000/",
   }),
-  tagTypes: [],
   endpoints: (builder) => ({
     signup: builder.mutation({
       query: (payload) => ({
@@ -59,6 +58,18 @@ export const instagramAPI = createApi({
       }),
       invalidates: [{ endpointName: "allposts" }],
     }),
+    comment: builder.mutation({
+      query: (payload) => ({
+        url: "/comment",
+        method: "PUT",
+        body: payload,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      }),
+      invalidates: [{ endpointName: "allposts" }],
+    }),
     myposts: builder.query({
       query: () => ({
         url: "myposts",
@@ -92,4 +103,5 @@ export const {
   useFollowingpostsQuery,
   useLikepostMutation,
   useUnlikepostMutation,
+  useCommentMutation
 } = instagramAPI;
