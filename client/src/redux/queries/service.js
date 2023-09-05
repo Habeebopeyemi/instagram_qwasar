@@ -34,6 +34,17 @@ export const instagramAPI = createApi({
         },
       }),
     }),
+    deletepost: builder.mutation({
+      query: (postId) => ({
+        url: `deletepost/${postId}`,
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      }),
+      invalidates: [{ endpointName: "allposts" }],
+    }),
     likepost: builder.mutation({
       query: (payload) => ({
         url: "/like",
@@ -103,5 +114,6 @@ export const {
   useFollowingpostsQuery,
   useLikepostMutation,
   useUnlikepostMutation,
-  useCommentMutation
+  useCommentMutation,
+  useDeletepostMutation,
 } = instagramAPI;

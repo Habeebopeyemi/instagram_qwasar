@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PostCard from "./PostCard";
+import { notification } from "antd";
+
 import {
   useAllpostsQuery,
   useLikepostMutation,
   useUnlikepostMutation,
   useCommentMutation,
+  useDeletepostMutation,
 } from "../../redux/queries/service";
 
 const Home = () => {
@@ -14,6 +17,7 @@ const Home = () => {
   const [likePost] = useLikepostMutation();
   const [unlikePost] = useUnlikepostMutation();
   const [comment] = useCommentMutation();
+  const [deletePost] = useDeletepostMutation();
 
   const handlePostLike = (postId) => {
     likePost({ postId })
@@ -49,6 +53,17 @@ const Home = () => {
     const { value } = e.target;
     setText(value);
   };
+  const handleDeletePost = (postId) => {
+    deletePost(postId)
+      .unwrap()
+      .then((res) => {
+        notification.success({ message: "post deleted successfully" });
+        refetch();
+      })
+      .catch((err) =>
+        notification.error({ message: "Error: fail to delete post" })
+      );
+  };
   return (
     <section className="w-full mt-5 flex gap-4 justify-center flex-wrap">
       {data?.posts.map((post) => (
@@ -67,6 +82,7 @@ const Home = () => {
           handleComment={handleComment}
           onChange={onChange}
           text={text}
+          deletePost={handleDeletePost}
         />
       ))}
     </section>

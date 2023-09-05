@@ -16,6 +16,7 @@ const PostCard = ({
   handleComment,
   text,
   postedBy,
+  deletePost,
 }) => {
   const user = sessionStorage.getItem("user");
   return (
@@ -23,7 +24,10 @@ const PostCard = ({
       <h2 className="p-2 text-lg logo flex justify-between">
         <span>{author?.name}</span>
         {user === postedBy && (
-          <span className="mt-[.3rem] hover:text-red-500">
+          <span
+            className="mt-[.3rem] hover:text-red-500"
+            onClick={() => deletePost(postId)}
+          >
             {<AiFillDelete />}
           </span>
         )}
