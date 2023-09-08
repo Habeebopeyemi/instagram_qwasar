@@ -1,7 +1,15 @@
 import "./App.css";
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
-import { Navbar, Profile, Home, Login, Signup, CreatePost } from "./components";
+import {
+  Navbar,
+  Profile,
+  Home,
+  Login,
+  Signup,
+  CreatePost,
+  UserProfile,
+} from "./components";
 
 const Routing = () => {
   const navigate = useNavigate();
@@ -15,7 +23,8 @@ const Routing = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/Signup" element={<Signup />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route exact path="/profile" element={<Profile />} />
+      <Route path="/profile/:userid" element={<UserProfile />} />
       <Route path="/login" element={<Login />} />
       <Route path="/CreatePost" element={<CreatePost />} />
     </Routes>

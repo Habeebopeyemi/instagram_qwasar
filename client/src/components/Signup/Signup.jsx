@@ -75,7 +75,7 @@ const Signup = () => {
           >
             {isLoading ? "Loading..." : "SIGNUP"}
           </button>
-          <Link to={"/"}>
+          <Link to={"/login"}>
             <p className="text-lg mb-5">Already have an account?</p>
           </Link>
         </form>

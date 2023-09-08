@@ -102,6 +102,13 @@ export const instagramAPI = createApi({
         headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
       }),
     }),
+    getUser: builder.query({
+      query: (userId) => ({
+        url: `user/${userId}`,
+        method: "GET",
+        headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
+      }),
+    }),
   }),
 });
 
@@ -116,4 +123,5 @@ export const {
   useUnlikepostMutation,
   useCommentMutation,
   useDeletepostMutation,
+  useGetUserQuery
 } = instagramAPI;

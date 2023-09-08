@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FiSettings } from "react-icons/fi";
 import Stat from "./Stat";
 import CustomName from "./CustomName";
-import { stat_data, friends_data } from "../../data";
+import { stat_data } from "../../data";
 import Friends from "./Friends";
 import { useMypostsQuery } from "../../redux/queries/service";
 

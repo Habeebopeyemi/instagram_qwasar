@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { AiFillHeart, AiFillDelete } from "react-icons/ai";
 import { HiThumbDown, HiThumbUp } from "react-icons/hi";
 
@@ -22,7 +23,9 @@ const PostCard = ({
   return (
     <figure className="w-full max-w-[400px] mb-4 border-[1px] rounded-md shadow-lg">
       <h2 className="p-2 text-lg logo flex justify-between">
-        <span>{author?.name}</span>
+        <Link to={user === postedBy ? "/profile" : `/profile/${postedBy}`}>
+          <span>{author?.name}</span>
+        </Link>
         {user === postedBy && (
           <span
             className="mt-[.3rem] hover:text-red-500"

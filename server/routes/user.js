@@ -5,22 +5,21 @@ const User = mongoose.model("User");
 const Post = mongoose.model("Post");
 const router = express.Router();
 
-router.get("/user/:id", (req, res, next) => {
-  User.findOne({ _id: req.params.id })
-    .select("-password")
-    .then(user => {
-      Post.find({ postedBy: req.params.id })
-        .populate("postedBy", "_id, name")
-        .exec((err, posts) => {
-          if (err) {
-            return res.status(422).json({ error: err });
-          }
-          return res.status(200).json({ user, posts });
-        });
-    })
-    .catch(err => {
-      return res.status(404).json({ error: "User not found" });
-    });
+router.get("/user/:id", requireAuth, async (req, res, next) => {
+  try {
+    const user = await User.findOne({ _id: req.params.id }).select("-password");
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const posts = await Post.find({ postedBy: req.params.id })
+      .populate("postedBy", "_id name")
+      .exec();
+    if (!posts) { 
+      return res.status(422).json({ error: err });
+    }
+    return res.status(200).json({ user, posts });
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 router.put("/follow", requireAuth, (req, res, next) => {
