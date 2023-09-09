@@ -1,16 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { FiSettings } from "react-icons/fi";
 import Stat from "./Stat";
-import CustomName from "./CustomName";
-import { stat_data } from "../../data";
+// import CustomName from "./CustomName";
 import Friends from "./Friends";
-import { useGetUserQuery } from "../../redux/queries/service";
+import {
+  useGetuserQuery,
+  useFollowMutation,
+  useUnfollowMutation,
+} from "../../redux/queries/service";
 
 const UserProfile = () => {
   const userId = useParams();
-  const { data, isLoading } = useGetUserQuery(userId.userid);
-  const [firstname] = useState(data?.user?.name);
+  const { data, isLoading, refetch } = useGetuserQuery(userId.userid);
+  const [follow] = useFollowMutation();
+  const [unFollow] = useUnfollowMutation();
+
+  const handleFollow = (ID) => {
+    follow({ followId: ID })
+      .unwrap()
+      .then((res) => {
+        refetch();
+        return res;
+      })
+      .catch((err) => err);
+  };
+  const handleUnfollow = (ID) => {
+    unFollow({ followId: ID })
+      .unwrap()
+      .then((res) => {
+        refetch();
+        return res;
+      })
+      .catch((err) => err);
+  };
   return (
     <>
       {isLoading ? (
@@ -30,7 +53,7 @@ const UserProfile = () => {
             <div className="w-full p-3">
               {/* username */}
               <div className="w-full mb-5 flex justify-between">
-                <h1 className="text-md mt-2">{data?.user?.name}</h1>
+                <h1 className="text-xl">{data?.user?.name}</h1>
                 <div>
                   <button className="flex">
                     <span className="py-[0.25rem] px-2 mr-3 border-[1px] border-slate-400 rounded-md hover:bg-blue-400 hover:text-white">
@@ -40,11 +63,10 @@ const UserProfile = () => {
                   </button>
                 </div>
               </div>
+              <p>{data?.user?.email}</p>
               {/* statistics */}
-
               <div className="w-full flex mb-5">
                 <Stat key={data.id} value={data?.posts?.length} title="posts" />
-
                 <Stat
                   key={data.id}
                   value={data?.user?.followers?.length}
@@ -58,18 +80,22 @@ const UserProfile = () => {
               </div>
               {/* full name */}
 
-              <div className="w-full mb-3 sm:flex">
-                <p className="my-[2px] mr-3">
-                  {firstname
-                    ? firstname.split("").map((ch, chIndex) => {
-                        if (ch !== " ") return <CustomName char={ch} key={chIndex} />;
-                      })
-                    : null}
-                  <sup className="m-2">TM</sup>
-                </p>
+              <div className="w-full mb-3">
+                <button
+                  className="bg-blue-400 py-2 px-5 mr-3 text-sm rounded-md text-white hover:bg-blue-600 hover:cursor-pointer"
+                  onClick={() => handleFollow(userId.userid)}
+                >
+                  FOLLOW
+                </button>
+                <button
+                  className="bg-blue-400 py-2 px-5 text-sm rounded-md text-white hover:bg-blue-600 hover:cursor-pointer"
+                  onClick={() => handleUnfollow(userId.userid)}
+                >
+                  UNFOLLOW
+                </button>
               </div>
               {/* company and website */}
-              <div>
+              {/* <div>
                 <h4>Founder of CNQ</h4>
                 <a
                   href="http://www.thisispoise.com"
@@ -79,7 +105,7 @@ const UserProfile = () => {
                 >
                   www.thisispoise.com
                 </a>
-              </div>
+              </div> */}
             </div>
           </div>
           {/* friends */}

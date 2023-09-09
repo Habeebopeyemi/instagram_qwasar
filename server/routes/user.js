@@ -13,7 +13,7 @@ router.get("/user/:id", requireAuth, async (req, res, next) => {
     const posts = await Post.find({ postedBy: req.params.id })
       .populate("postedBy", "_id name")
       .exec();
-    if (!posts) { 
+    if (!posts) {
       return res.status(422).json({ error: err });
     }
     return res.status(200).json({ user, posts });
@@ -22,55 +22,60 @@ router.get("/user/:id", requireAuth, async (req, res, next) => {
   }
 });
 
-router.put("/follow", requireAuth, (req, res, next) => {
-  User.findByIdAndUpdate(
-    req.body.followId, //ID to be followed will be provided from client side
-    {
-      $push: { follers: req.user._id },
-    },
-    { new: true },
-    (err, result) => {
-      if (err) return res.status(422).json({ error: err });
-      User.findByIdAndUpdate(
-        //update the list of people the user is following
-        req.user._id,
-        {
-          $push: { following: req.body.followId },
-        },
-        { new: true }
-      );
-    }
-  )
-    .then(result => {
-      res.status(200).json({ result });
-    })
-    .catch(err => {
-      return res.status(422).json({ error: err });
-    });
+router.put("/follow", requireAuth, async (req, res, next) => {
+  try {
+    const followedUser = await User.findByIdAndUpdate(
+      req.body.followId, //ID to be followed will be provided from client side
+      {
+        $addToSet: { followers: req.user._id },
+      },
+      { new: true }
+    );
+    if (!followedUser)
+      return res.status(422).json({ error: "User to follow not found" });
+    const currentUser = await User.findByIdAndUpdate(
+      //update the list of people the user is following
+      req.user._id,
+      {
+        $addToSet: { following: req.body.followId },
+      },
+      { new: true }
+    ).select("-password");
+    if (!currentUser)
+      return res.status(422).json({ error: "Current user not found" });
+
+    res.status(200).json({ result: currentUser });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 });
 
-router.put("/unfollow", requireAuth, (req, res, next) => {
-  User.findByIdAndUpdate(
-    req.body.unfollowId,
-    {
-      $pull: { followers: req.user._id },
-    },
-    { new: true },
-    (err, result) => {
-      if (err) return res.status(422).json({ error: err });
-      User.findByIdAndUpdate(
-        req.user._id,
-        { $pull: { following: req.body.unfollowId } },
-        { new: true }
-      );
-    }
-  )
-    .then(result => {
-      return res.status(200).json(result);
-    })
-    .catch(err => {
-      return res.status(422).json({ error: err });
-    });
+router.put("/unfollow", requireAuth, async (req, res, next) => {
+  try {
+    const unfollowedUser = await User.findByIdAndUpdate(
+      req.body.followId, //ID to be followed will be provided from client side
+      {
+        $pull: { followers: req.user._id },
+      },
+      { new: true }
+    );
+    if (!unfollowedUser)
+      return res.status(422).json({ error: "User to follow not found" });
+    const currentUser = await User.findByIdAndUpdate(
+      //update the list of people the user is following
+      req.user._id,
+      {
+        $pull: { following: req.body.followId },
+      },
+      { new: true }
+    );
+    if (!currentUser)
+      return res.status(422).json({ error: "Current user not found" });
+
+    res.status(200).json({ result: currentUser });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 });
 
 router.put("/updatepicture", requireAuth, (req, res, next) => {

@@ -17,7 +17,6 @@ const Home = () => {
   const [unlikePost] = useUnlikepostMutation();
   const [comment] = useCommentMutation();
   const [deletePost] = useDeletepostMutation();
-
   const handlePostLike = (postId) => {
     likePost({ postId })
       .unwrap()
@@ -69,25 +68,32 @@ const Home = () => {
         "Loading....."
       ) : (
         <section className="w-full mt-5 flex gap-4 justify-center flex-wrap">
-          {data?.posts.map((post) => (
-            <PostCard
-              key={post._id}
-              author={post.postedBy}
-              url={post.photo}
-              title={post.title}
-              body={post.body}
-              likes={post.likes}
-              postId={post._id}
-              postedBy={post.postedBy._id}
-              likePost={handlePostLike}
-              unlikePost={handlePostUnlike}
-              comments={post.comments}
-              handleComment={handleComment}
-              onChange={onChange}
-              text={text}
-              deletePost={handleDeletePost}
-            />
-          ))}
+          {data?.posts.length > 0 ? (
+            data?.posts.map((post) => (
+              <PostCard
+                key={post._id}
+                author={post.postedBy}
+                url={post.photo}
+                title={post.title}
+                body={post.body}
+                likes={post.likes}
+                postId={post._id}
+                postedBy={post.postedBy._id}
+                likePost={handlePostLike}
+                unlikePost={handlePostUnlike}
+                comments={post.comments}
+                handleComment={handleComment}
+                onChange={onChange}
+                text={text}
+                deletePost={handleDeletePost}
+              />
+            ))
+          ) : (
+            <div className="text-center mt-[10rem]">
+              <h2 className="text-[2rem] logo">Welcome!!!</h2>
+              <p>You don't have a post currently, kindly create a post</p>
+            </div>
+          )}
         </section>
       )}
     </>

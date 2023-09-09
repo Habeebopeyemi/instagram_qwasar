@@ -33,6 +33,7 @@ export const instagramAPI = createApi({
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
       }),
+      invalidates: [{ endpointName: "allposts" }],
     }),
     deletepost: builder.mutation({
       query: (postId) => ({
@@ -81,6 +82,30 @@ export const instagramAPI = createApi({
       }),
       invalidates: [{ endpointName: "allposts" }],
     }),
+    follow: builder.mutation({
+      query: (userId) => ({
+        url: "follow",
+        method: "PUT",
+        body: userId,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      }),
+      invalidates: [{ endpointName: "getuser" }],
+    }),
+    unfollow: builder.mutation({
+      query: (userId) => ({
+        url: "unfollow",
+        method: "PUT",
+        body: userId,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      }),
+      invalidates: [{ endpointName: "getUser" }],
+    }),
     myposts: builder.query({
       query: () => ({
         url: "myposts",
@@ -102,7 +127,7 @@ export const instagramAPI = createApi({
         headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
       }),
     }),
-    getUser: builder.query({
+    getuser: builder.query({
       query: (userId) => ({
         url: `user/${userId}`,
         method: "GET",
@@ -123,5 +148,7 @@ export const {
   useUnlikepostMutation,
   useCommentMutation,
   useDeletepostMutation,
-  useGetUserQuery
+  useGetuserQuery,
+  useFollowMutation,
+  useUnfollowMutation,
 } = instagramAPI;

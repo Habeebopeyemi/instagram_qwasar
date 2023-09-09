@@ -24,7 +24,9 @@ const PostCard = ({
     <figure className="w-full max-w-[400px] mb-4 border-[1px] rounded-md shadow-lg">
       <h2 className="p-2 text-lg logo flex justify-between">
         <Link to={user === postedBy ? "/profile" : `/profile/${postedBy}`}>
-          <span>{author?.name}</span>
+          <span className=" hover:underline hover:text-blue-500">
+            {author?.name}
+          </span>
         </Link>
         {user === postedBy && (
           <span
