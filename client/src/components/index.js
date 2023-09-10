@@ -5,3 +5,4 @@ export { default as Profile } from "./Profile/Profile";
 export { default as UserProfile } from "./Profile/UserProfile";
 export { default as Signup } from "./Signup/Signup";
 export { default as CreatePost } from "./CreatePost/CreatePost";
+export {default as SubscribedPost} from "./SubscribedPost/SubscribedPost"

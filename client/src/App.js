@@ -9,6 +9,7 @@ import {
   Signup,
   CreatePost,
   UserProfile,
+  SubscribedPost,
 } from "./components";
 
 const Routing = () => {
@@ -27,6 +28,7 @@ const Routing = () => {
       <Route exact path="/profile/:userid" element={<UserProfile />} />
       <Route path="/login" element={<Login />} />
       <Route path="/CreatePost" element={<CreatePost />} />
+      <Route path="/feed" element={<SubscribedPost />} />
     </Routes>
   );
 };

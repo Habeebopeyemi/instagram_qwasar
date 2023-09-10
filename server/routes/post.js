@@ -21,8 +21,8 @@ router.get("/allposts", requireAuth, (req, res, next) => {
 
 router.get("/followingposts", requireAuth, (req, res, next) => {
   Post.find({ postedBy: { $in: req.user.following } }) //return posts made by the users i am following
-    .populate("postedBy", "_id, name")
-    .populate("comments.postedBy", "_id, name")
+    .populate("postedBy", "_id name")
+    .populate("comments.postedBy", "_id name")
     .then(posts => {
       return res
         .status(200)
@@ -35,7 +35,7 @@ router.get("/followingposts", requireAuth, (req, res, next) => {
 
 router.get("/myposts", requireAuth, (req, res, next) => {
   Post.find({ postedBy: req.user._id })
-    .populate("postedBy", "_id, name")
+    .populate("postedBy", "_id name email followers following")
     .then(posts => {
       return res
         .status(200)

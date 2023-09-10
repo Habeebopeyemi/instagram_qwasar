@@ -47,7 +47,7 @@ const Navbar = () => {
           >
             <ul
               className={
-                "basis-[55%] p-2 md:p-0 md:flex md:my-0 justify-end smax:basis-[60%]"
+                "basis-[75%] p-2 md:p-0 md:flex md:my-0 justify-end smax:basis-[60%]"
               }
             >
               {header_info.map((info) => {
@@ -65,7 +65,11 @@ const Navbar = () => {
                 }
               })}
               {header_info.map((info) => {
-                if (info.text === "Profile" || info.text === "Create Post") {
+                if (
+                  info.text === "Profile" ||
+                  info.text === "Create Post" ||
+                  info.text === "Feeds"
+                ) {
                   return (
                     <List
                       key={info.id}
