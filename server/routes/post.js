@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const requireAuth = require("../middleware/requireAuth");
 
 const Post = mongoose.model("Post");
+const User = mongoose.model("User");
 const router = express.Router();
 
 router.get("/allposts", requireAuth, (req, res, next) => {
@@ -33,17 +34,22 @@ router.get("/followingposts", requireAuth, (req, res, next) => {
     });
 });
 
-router.get("/myposts", requireAuth, (req, res, next) => {
-  Post.find({ postedBy: req.user._id })
-    .populate("postedBy", "_id name email followers following")
-    .then(posts => {
-      return res
-        .status(200)
-        .json({ message: "my posts retieved successfully", posts });
-    })
-    .catch(err => {
-      console.log(err);
-    });
+router.get("/myposts", requireAuth, async (req, res, next) => {
+  try {
+    const user = await User.findOne({ _id: req.user._id }).select("-password");
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const posts = await Post.find({ postedBy: req.user._id })
+      .populate("postedBy", "_id name email followers following")
+      .exec();
+    if (!posts) return res.status(422).json({ error: "Unprocessible entity" });
+
+    return res
+      .status(200)
+      .json({ message: "my posts retieved successfully", user, posts });
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 router.post("/createpost", requireAuth, (req, res, next) => {

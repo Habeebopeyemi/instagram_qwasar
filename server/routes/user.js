@@ -14,7 +14,7 @@ router.get("/user/:id", requireAuth, async (req, res, next) => {
       .populate("postedBy", "_id name")
       .exec();
     if (!posts) {
-      return res.status(422).json({ error: err });
+      return res.status(422).json({ error: "Unprocessable entity" });
     }
     return res.status(200).json({ user, posts });
   } catch (error) {

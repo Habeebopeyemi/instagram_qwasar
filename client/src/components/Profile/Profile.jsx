@@ -17,7 +17,11 @@ const Profile = () => {
             <div className="w-full basis-[50%]">
               <div className="w-[150px] h-[150px] mx-auto mb-5">
                 <img
-                  src="https://i.pinimg.com/originals/e2/43/c0/e243c0f7b9ee95151d2f2c045367047c.jpg"
+                  src={
+                    data?.user?.pic
+                      ? data?.user?.pic
+                      : "https://cs12.pikabu.ru/post_img/big/2022/10/24/2/1666571824193118478.jpg"
+                  }
                   alt="refimage"
                   className="w-full h-full rounded-full"
                 />
@@ -25,10 +29,8 @@ const Profile = () => {
             </div>
             <div className="w-full p-3">
               {/* username */}
-              <div className="w-full mb-5 flex justify-between">
-                <h1 className="text-md mt-2">
-                  {data?.posts[0]?.postedBy.name}
-                </h1>
+              <div className="w-full mb-3 flex justify-between">
+                <h1 className="text-[2rem] logo mt-2">{data?.user?.name}</h1>
                 <div>
                   <button className="flex">
                     <span className="py-[0.25rem] px-2 mr-3 border-[1px] border-slate-400 rounded-md hover:bg-blue-400 hover:text-white">
@@ -38,16 +40,16 @@ const Profile = () => {
                   </button>
                 </div>
               </div>
-              <p>{data?.posts[0]?.postedBy.email}</p>
+              <p>{data?.user?.email}</p>
               {/* statistics */}
               <div className="w-full flex mb-5">
                 <Stat value={data?.posts?.length} title="posts" />
                 <Stat
-                  value={data?.posts[0]?.postedBy.followers?.length}
+                  value={data?.user ? data?.user?.followers?.length : 0}
                   title="followers"
                 />
                 <Stat
-                  value={data?.posts[0]?.postedBy.following?.length}
+                  value={data?.user ? data?.user?.following?.length : 0}
                   title="following"
                 />
               </div>

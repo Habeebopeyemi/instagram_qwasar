@@ -13,7 +13,6 @@ const CreatePost = () => {
     setPost((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
   };
   const onUpload = (e) => {
-    console.log(e.target.files[0]);
     setImage(e.target.files[0]);
   };
   const handleImageUpload = (e) => {
