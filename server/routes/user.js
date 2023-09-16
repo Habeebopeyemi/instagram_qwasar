@@ -78,16 +78,20 @@ router.put("/unfollow", requireAuth, async (req, res, next) => {
   }
 });
 
-router.put("/updatepicture", requireAuth, (req, res, next) => {
-  User.findByIdAndUpdate(
-    req.user._id,
-    { $set: { pic: req.body.pic } },
-    { new: true },
-    (err, result) => {
-      if (err) return res.status(422).json({ error: err });
-      res.status(200).json(result);
+router.put("/updatepicture", requireAuth, async (req, res, next) => {
+  try {
+    const result = await User.findByIdAndUpdate(
+      req.user._id,
+      { $set: { pic: req.body.pic } },
+      { new: true }
+    ).exec();
+    if (!result) {
+      return res.status(404).json({ error: "User profile not found" });
     }
-  );
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(422).json({ error: error });
+  }
 });
 
 module.exports = router;

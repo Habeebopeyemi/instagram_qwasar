@@ -1,12 +1,64 @@
-import React, { useState } from "react";
-import { FiSettings } from "react-icons/fi";
+import React, { useState, useEffect } from "react";
+import { notification } from "antd";
 import Stat from "./Stat";
-// import CustomName from "./CustomName";
 import Friends from "./Friends";
-import { useMypostsQuery } from "../../redux/queries/service";
+import {
+  useMypostsQuery,
+  useUpdatePictureMutation,
+} from "../../redux/queries/service";
 
 const Profile = () => {
-  const { data, isLoading } = useMypostsQuery();
+  const [image, setImage] = useState("");
+  const [update, setUpdate] = useState(false);
+  const { data, isLoading, refetch } = useMypostsQuery();
+  const [updateProfilePic] = useUpdatePictureMutation();
+
+  const handleProfileImageUpdate = () => {
+    setUpdate(true);
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "instagram_qwasar");
+    data.append("cloud_name", "devhabeeb");
+
+    fetch("https://api.cloudinary.com/v1_1/devhabeeb/image/upload", {
+      method: "POST",
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        //  api call to backend
+        handlePicUpdate(data.url);
+      })
+      .catch((err) => {
+        setUpdate(false);
+        throw new Error(err);
+      });
+  };
+  const handlePicUpdate = (url) => {
+    updateProfilePic({ pic: url })
+      .unwrap()
+      .then((res) => {
+        refetch();
+        setUpdate(false);
+        notification["success"]({
+          message: "Successfully updated profile picture",
+        });
+      })
+      .catch((err) => {
+        setUpdate(false);
+        notification.error({
+          message: "Error: profile picture update not successful",
+        });
+      });
+  };
+  const updatePic = (file) => {
+    setImage(file);
+  };
+  useEffect(() => {
+    if (image) {
+      handleProfileImageUpdate();
+    }
+  }, [image]);
   return (
     <>
       {isLoading ? (
@@ -14,7 +66,7 @@ const Profile = () => {
       ) : (
         <section className="w-full max-w-[1000px] mx-auto">
           <div className="w-full max-w-[500px] mt-10 mx-auto sm:max-w-[90%] sm:flex md:max-w-[1000px] border-b-[1px] border-black">
-            <div className="w-full basis-[50%]">
+            <div className="w-full basis-[50%] flex flex-col justify-center">
               <div className="w-[150px] h-[150px] mx-auto mb-5">
                 <img
                   src={
@@ -26,19 +78,24 @@ const Profile = () => {
                   className="w-full h-full rounded-full"
                 />
               </div>
+              <div className="custom-file-input md:basis-[50%] mr-3 flex">
+                <label
+                  htmlFor="image"
+                  className="bg-blue-400 rounded-md hover:bg-blue-500 mx-auto mb-2"
+                >
+                  {update ? "Updating..." : "Update pic"}
+                </label>
+                <input
+                  type="file"
+                  id="image"
+                  onChange={(e) => updatePic(e.target.files[0])}
+                />
+              </div>
             </div>
             <div className="w-full p-3">
               {/* username */}
               <div className="w-full mb-3 flex justify-between">
                 <h1 className="text-[2rem] logo mt-2">{data?.user?.name}</h1>
-                <div>
-                  <button className="flex">
-                    <span className="py-[0.25rem] px-2 mr-3 border-[1px] border-slate-400 rounded-md hover:bg-blue-400 hover:text-white">
-                      Edit Profile
-                    </span>
-                    <FiSettings className="mt-[5px] text-xl" />
-                  </button>
-                </div>
               </div>
               <p>{data?.user?.email}</p>
               {/* statistics */}

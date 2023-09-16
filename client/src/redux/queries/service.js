@@ -113,6 +113,18 @@ export const instagramAPI = createApi({
         headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
       }),
     }),
+    updatePicture: builder.mutation({
+      query: (pic) => ({
+        url: "updatepicture",
+        method: "PUT",
+        body: pic,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      }),
+      invalidates: [{ endpointName: "myposts" }],
+    }),
     allposts: builder.query({
       query: () => ({
         url: "allposts",
@@ -151,4 +163,5 @@ export const {
   useGetuserQuery,
   useFollowMutation,
   useUnfollowMutation,
+  useUpdatePictureMutation
 } = instagramAPI;

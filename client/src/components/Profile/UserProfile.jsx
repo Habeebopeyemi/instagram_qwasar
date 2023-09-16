@@ -59,12 +59,12 @@ const UserProfile = () => {
               <div className="w-full mb-3 flex justify-between">
                 <h1 className="text-[2rem] logo mt-2">{data?.user?.name}</h1>
                 <div>
-                  <button className="flex">
+                  {/* <button className="flex">
                     <span className="py-[0.25rem] px-2 mr-3 border-[1px] border-slate-400 rounded-md hover:bg-blue-400 hover:text-white">
                       Edit Profile
                     </span>
                     <FiSettings className="mt-[5px] text-xl" />
-                  </button>
+                  </button> */}
                 </div>
               </div>
               <p>{data?.user?.email}</p>
