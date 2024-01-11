@@ -21,7 +21,7 @@ const Navbar = () => {
     } else {
       setOpen(false);
     }
-  }, [size.width > 768]);
+  }, [size.width]);
 
   return (
     <header className="w-full bg-[hsla(0,0%,100%,1)]">

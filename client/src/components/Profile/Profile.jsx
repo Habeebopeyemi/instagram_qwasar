@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { notification } from "antd";
 import Stat from "./Stat";
 import Friends from "./Friends";
@@ -13,7 +13,7 @@ const Profile = () => {
   const { data, isLoading, refetch } = useMypostsQuery();
   const [updateProfilePic] = useUpdatePictureMutation();
 
-  const handleProfileImageUpdate = () => {
+  const handleProfileImageUpdate = useCallback(() => {
     setUpdate(true);
     const data = new FormData();
     data.append("file", image);
@@ -33,7 +33,7 @@ const Profile = () => {
         setUpdate(false);
         throw new Error(err);
       });
-  };
+  }, [image]);
   const handlePicUpdate = (url) => {
     updateProfilePic({ pic: url })
       .unwrap()
@@ -58,7 +58,7 @@ const Profile = () => {
     if (image) {
       handleProfileImageUpdate();
     }
-  }, [image]);
+  }, [image, handleProfileImageUpdate]);
   return (
     <>
       {isLoading ? (

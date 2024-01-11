@@ -19,7 +19,7 @@ const Routing = () => {
     if (!token) {
       navigate("/login");
     }
-  }, []);
+  }, [navigate]);
   return (
     <Routes>
       <Route path="/" element={<Home />} />

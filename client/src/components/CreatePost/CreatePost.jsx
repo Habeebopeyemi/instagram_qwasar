@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { notification } from "antd";
 import { useCreatepostMutation } from "../../redux/queries/service";
@@ -37,7 +37,7 @@ const CreatePost = () => {
         throw new Error(err);
       });
   };
-  const onSubmit = () => {
+  const onSubmit = useCallback(() => {
     createpostMutation(post)
       .unwrap()
       .then((res) => {
@@ -49,12 +49,12 @@ const CreatePost = () => {
         notification.error({ message: "Error creating post" });
         setIsLoading(false);
       });
-  };
+  }, [createpostMutation, post, setIsLoading, navigate]);
   useEffect(() => {
     if (post.pic_url) {
       onSubmit();
     }
-  }, [post.pic_url]);
+  }, [post.pic_url, onSubmit]);
   return (
     <div className="w-[90%] max-w-[600px] mx-auto my-10 rounded-md shadow-lg border-[1px]">
       <div className="w-full my-10">

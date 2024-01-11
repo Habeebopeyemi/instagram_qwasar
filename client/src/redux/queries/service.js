@@ -4,7 +4,9 @@ export const instagramAPI = createApi({
   reducerPath: "instagramAPI",
   baseQuery: fetchBaseQuery({
     baseUrl:
-      process.env.NODE_ENV === "production" ? "" : "http://localhost:5000/",
+      process.env.NODE_ENV === "production"
+        ? "https://instapi.thisispoise.com/"
+        : "https://instapi.thisispoise.com/",
   }),
   endpoints: (builder) => ({
     signup: builder.mutation({
@@ -163,5 +165,5 @@ export const {
   useGetuserQuery,
   useFollowMutation,
   useUnfollowMutation,
-  useUpdatePictureMutation
+  useUpdatePictureMutation,
 } = instagramAPI;
