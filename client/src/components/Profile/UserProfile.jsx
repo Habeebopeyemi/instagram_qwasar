@@ -1,8 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { FiSettings } from "react-icons/fi";
 import Stat from "./Stat";
-// import CustomName from "./CustomName";
 import Friends from "./Friends";
 import {
   useGetuserQuery,
@@ -58,14 +56,7 @@ const UserProfile = () => {
               {/* username */}
               <div className="w-full mb-3 flex justify-between">
                 <h1 className="text-[2rem] logo mt-2">{data?.user?.name}</h1>
-                <div>
-                  {/* <button className="flex">
-                    <span className="py-[0.25rem] px-2 mr-3 border-[1px] border-slate-400 rounded-md hover:bg-blue-400 hover:text-white">
-                      Edit Profile
-                    </span>
-                    <FiSettings className="mt-[5px] text-xl" />
-                  </button> */}
-                </div>
+                <div></div>
               </div>
               <p>{data?.user?.email}</p>
               {/* statistics */}
@@ -98,18 +89,6 @@ const UserProfile = () => {
                   UNFOLLOW
                 </button>
               </div>
-              {/* company and website */}
-              {/* <div>
-                <h4>Founder of CNQ</h4>
-                <a
-                  href="http://www.thisispoise.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 font-[500]"
-                >
-                  www.thisispoise.com
-                </a>
-              </div> */}
             </div>
           </div>
           {/* friends */}

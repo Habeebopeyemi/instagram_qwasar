@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { notification } from "antd";
@@ -45,7 +45,8 @@ const Signup = () => {
         throw new Error(err);
       });
   };
-  const handleSubmit = () => {
+  
+  const handleSubmit = useCallback(() => {
     signupMutation(userInput)
       .unwrap()
       .then((response) => {
@@ -58,12 +59,13 @@ const Signup = () => {
         });
         notification.error({ message: "error creating account" });
       });
-  };
+  },[signupMutation, userInput, navigate]);
+
   useEffect(() => {
     if (userInput.pic) {
       handleSubmit();
     }
-  }, [userInput.pic]);
+  }, [userInput.pic, handleSubmit]);
   return (
     <div className="w-[90%] max-w-[500px] mx-auto my-10 rounded-md shadow-lg border-[1px]">
       <div className="w-full my-20">

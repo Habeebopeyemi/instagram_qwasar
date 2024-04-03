@@ -13,45 +13,66 @@ const Profile = () => {
   const { data, isLoading, refetch } = useMypostsQuery();
   const [updateProfilePic] = useUpdatePictureMutation();
 
-  const handleProfileImageUpdate = useCallback(() => {
-    setUpdate(true);
-    const data = new FormData();
-    data.append("file", image);
-    data.append("upload_preset", "instagram_qwasar");
-    data.append("cloud_name", "devhabeeb");
-
-    fetch("https://api.cloudinary.com/v1_1/devhabeeb/image/upload", {
-      method: "POST",
-      body: data,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        //  api call to backend
-        handlePicUpdate(data.url);
-      })
-      .catch((err) => {
-        setUpdate(false);
-        throw new Error(err);
-      });
-  }, [image]);
-  const handlePicUpdate = (url) => {
-    updateProfilePic({ pic: url })
-      .unwrap()
-      .then((res) => {
-        refetch();
-        setUpdate(false);
-        notification["success"]({
-          message: "Successfully updated profile picture",
+  
+  // const handlePicUpdate = (url) => {
+  //   updateProfilePic({ pic: url })
+  //     .unwrap()
+  //     .then((res) => {
+  //       refetch();
+  //       setUpdate(false);
+  //       notification["success"]({
+  //         message: "Successfully updated profile picture",
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       setUpdate(false);
+  //       notification.error({
+  //         message: "Error: profile picture update not successful",
+  //       });
+  //     });
+  // };
+  const handlePicUpdate = useCallback(
+    (url) => {
+      updateProfilePic({ pic: url })
+        .unwrap()
+        .then((res) => {
+          refetch();
+          setUpdate(false);
+          notification["success"]({
+            message: "Successfully updated profile picture",
+          });
+        })
+        .catch((err) => {
+          setUpdate(false);
+          notification.error({
+            message: "Error: profile picture update not successful",
+          });
         });
-      })
-      .catch((err) => {
-        setUpdate(false);
-        notification.error({
-          message: "Error: profile picture update not successful",
-        });
-      });
-  };
-  const updatePic = (file) => {
+   
+    }, [updateProfilePic, refetch])
+  
+      const handleProfileImageUpdate = useCallback(() => {
+        setUpdate(true);
+        const data = new FormData();
+        data.append("file", image);
+        data.append("upload_preset", "instagram_qwasar");
+        data.append("cloud_name", "devhabeeb");
+    
+        fetch("https://api.cloudinary.com/v1_1/devhabeeb/image/upload", {
+          method: "POST",
+          body: data,
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            //  api call to backend
+            handlePicUpdate(data.url);
+          })
+          .catch((err) => {
+            setUpdate(false);
+            throw new Error(err);
+          });
+      }, [image, handlePicUpdate]);
+      const updatePic = (file) => {
     setImage(file);
   };
   useEffect(() => {
@@ -110,43 +131,6 @@ const Profile = () => {
                   title="following"
                 />
               </div>
-              {/* full name */}
-
-              {/* <div className="w-full mb-3 sm:flex">
-            <p className="my-[2px] mr-3">
-              {firstname
-                ? firstname.split("").map((ch, chIndex) => {
-                    return <CustomName char={ch} key={chIndex} />;
-                  })
-                : null}
-            </p>
-            <p className="my-[2px]">
-              <>
-                {lastname
-                  ? lastname.split("").map((ch, chIndex) => {
-                      return (
-                        <>
-                          <CustomName char={ch} key={chIndex} />
-                        </>
-                      );
-                    })
-                  : null}
-              </>
-              <sup className="m-2">TM</sup>
-            </p>
-          </div> */}
-              {/* company and website */}
-              {/* <div>
-            <h4>Founder of CNQ</h4>
-            <a
-              href="http://www.thisispoise.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 font-[500]"
-            >
-              www.thisispoise.com
-            </a>
-          </div> */}
             </div>
           </div>
           {/* friends */}
