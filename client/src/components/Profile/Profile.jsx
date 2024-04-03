@@ -13,24 +13,6 @@ const Profile = () => {
   const { data, isLoading, refetch } = useMypostsQuery();
   const [updateProfilePic] = useUpdatePictureMutation();
 
-  
-  // const handlePicUpdate = (url) => {
-  //   updateProfilePic({ pic: url })
-  //     .unwrap()
-  //     .then((res) => {
-  //       refetch();
-  //       setUpdate(false);
-  //       notification["success"]({
-  //         message: "Successfully updated profile picture",
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       setUpdate(false);
-  //       notification.error({
-  //         message: "Error: profile picture update not successful",
-  //       });
-  //     });
-  // };
   const handlePicUpdate = useCallback(
     (url) => {
       updateProfilePic({ pic: url })

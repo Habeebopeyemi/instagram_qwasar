@@ -3,7 +3,6 @@ import PostCard from "../Home/PostCard";
 import { notification } from "antd";
 
 import {
-  useAllpostsQuery,
   useLikepostMutation,
   useUnlikepostMutation,
   useCommentMutation,
